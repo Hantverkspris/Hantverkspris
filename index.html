@@ -1,47 +1,982 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="sv">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hantverkspris – Räkna ut vad jobbet kostar innan du ringer</title>
-    <meta name="description" content="Beskriv ditt hantverksprojekt och få en prisuppskattning direkt – med ROT-avdrag inräknat. Baserat på 195 hantverkare i Sverige 2026." />
-    <meta name="author" content="Hantverkspris" />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://hantverkspris.se/" />
-    <meta property="og:title" content="Hantverkspris – Räkna ut vad jobbet kostar" />
-    <meta property="og:description" content="Beskriv ditt hantverksprojekt och få en prisuppskattning direkt – med ROT-avdrag. Baserat på aktuella priser från 195 hantverkare 2026." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://hantverkspris.se/" />
-    <meta property="og:locale" content="sv_SE" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Hantverkspris – Räkna ut vad jobbet kostar" />
-    <meta name="twitter:description" content="Prisuppskattning direkt – med ROT-avdrag. Baserat på 195 hantverkare i Sverige." />
-    <meta name="theme-color" content="#3D2114" />
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Hantverkspris",
-      "url": "https://hantverkspris.se",
-      "description": "Beskriv ditt hantverksprojekt och få en prisuppskattning direkt med ROT-avdrag inräknat.",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Web",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "SEK"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "ratingCount": "195"
-      }
-    }
-    </script>
-  </head>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hantverkspris – Rätt pris, rätt från start</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:#FAF6EE;color:#3A1208;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+:root{
+  --cream:#FAF6EE;--warm:#FFFDF8;--dark:#3A1208;--mid:#5C3A28;--muted:#A08070;
+  --border:#E8D8C4;--orange:#E8A84A;--os:#F5C97A;--obg:#FDF4E0;
+  --green:#3A6B45;--gbg:#E4F0E8;--blue:#2563EB;--bbg:#EFF6FF;
+  --hero:#6B2A1A;--hero2:#561F12;--gold:#E8A84A;--golds:#F5C97A;--goldbg:#FDF4E0;
+  --rust:#C4614A;--wt:#F5ECD8;
+  --sh:0 2px 14px rgba(58,18,8,.08);--shm:0 8px 36px rgba(58,18,8,.16);
+  --r:4px;--rs:4px;
+}
+.page{display:none}.page.active{display:block}
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:14px 48px;background:#FAF6EE;border-bottom:3px solid #3A1208;transition:none}
+
+.logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;letter-spacing:-.5px;cursor:pointer;text-transform:uppercase}
+.logo span{color:var(--rust)}
+.nav-links{display:flex;gap:26px;align-items:center}
+.nav-links a{font-size:14px;font-weight:500;color:var(--mid);cursor:pointer;transition:color .2s}
+.nav-links a:hover{color:var(--dark)}
+.nav-right{display:flex;gap:10px}
+.btn-login{background:transparent;color:var(--hero);border:2px solid var(--hero);border-radius:3px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;text-transform:uppercase;letter-spacing:.04em}
+.btn-login:hover{border-color:var(--mid);color:var(--dark)}
+.btn-cta{background:var(--hero);color:#fff;border:none;border-radius:3px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;text-transform:uppercase;letter-spacing:.04em}
+.btn-cta:hover{background:var(--rust)}
+
+/* HERO */
+.hero{min-height:100vh;background:var(--hero);color:#fff;display:flex;flex-direction:column;position:relative;overflow:hidden;padding-top:70px}
+.hglow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 85% 20%,rgba(232,168,74,.12) 0%,transparent 60%)}
+.hgrain{position:absolute;inset:0;opacity:.032;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hbody{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;text-align:left;padding:clamp(32px,5vw,72px);max-width:1100px;width:100%}
+.hbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(212,98,42,.18);border:1px solid rgba(212,98,42,.35);border-radius:3px;padding:7px 16px;font-size:12px;color:var(--os);letter-spacing:.06em;text-transform:uppercase;font-weight:600;margin-bottom:28px;animation:fu .5s ease both}
+.hbadge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--os);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.65)}}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(52px,9vw,110px);font-weight:900;line-height:.95;letter-spacing:-4px;max-width:760px;margin-bottom:28px;animation:fu .5s .08s ease both;font-style:italic}
+.hero h1 em{color:var(--os);font-style:normal}
+.hsub{font-size:17px;color:rgba(245,236,216,.7);max-width:480px;line-height:1.7;margin-bottom:40px;animation:fu .5s .16s ease both;border-left:3px solid var(--gold);padding-left:16px}
+.hctas{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-start;animation:fu .5s .24s ease both}
+.btn-p{background:var(--gold);color:var(--hero);border:none;border-radius:3px;padding:16px 36px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .25s;text-transform:uppercase;letter-spacing:.05em}
+.btn-p:hover{background:var(--golds)}
+.btn-g{background:transparent;color:rgba(245,236,216,.8);border:2px solid rgba(245,236,216,.35);border-radius:3px;padding:16px 36px;font-size:15px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .25s;text-transform:uppercase;letter-spacing:.04em}
+.btn-g:hover{border-color:rgba(255,255,255,.5);color:#fff}
+.hstats{position:relative;z-index:2;display:flex;border-top:1px solid rgba(255,255,255,.08);animation:fu .5s .32s ease both}
+.stat{flex:1;text-align:center;padding:24px 10px;border-right:1px solid rgba(255,255,255,.08)}
+.stat:last-child{border-right:none}
+.sn{font-family:'Playfair Display',serif;font-size:38px;font-weight:900;color:var(--gold);font-style:italic}
+.sl{font-size:11px;color:rgba(245,236,216,.45);margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
+@keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* SHARED */
+.sec{padding:110px 72px}
+.si{max-width:1080px;margin:0 auto}
+.lbl{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);font-weight:700;margin-bottom:12px}
+.lbl::before{content:'';width:20px;height:2px;background:var(--orange);border-radius:2px}
+.st{font-family:'Playfair Display',serif;font-size:clamp(32px,4.5vw,56px);font-weight:900;letter-spacing:-2px;line-height:1.05;margin-bottom:16px;font-style:italic}
+.ss{color:var(--mid);font-size:17px;line-height:1.65;max-width:520px;margin-bottom:50px}
+
+/* FORM */
+.fld{margin-bottom:18px}
+.fld label{display:block;font-size:13px;font-weight:600;margin-bottom:7px}
+.fld label .h{font-weight:400;color:var(--muted);font-size:12px;margin-left:5px}
+.fld input,.fld textarea,.fld select{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:4px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--dark);background:var(--cream);transition:all .2s;outline:none;-webkit-appearance:none}
+.fld input:focus,.fld textarea:focus,.fld select:focus{border-color:var(--orange);background:#fff;box-shadow:0 0 0 4px rgba(212,98,42,.08)}
+.fld textarea{resize:vertical;min-height:88px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* CARD */
+.card{background:#fff;border:1px solid var(--border);border-radius:4px;padding:32px;margin-bottom:16px}
+.ct{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;margin-bottom:6px}
+.cd{color:var(--mid);font-size:14px;line-height:1.6;margin-bottom:24px}
+
+/* BTNS */
+.btn-n{background:var(--hero);color:var(--wt);border:none;border-radius:0;padding:14px 30px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .22s;text-transform:uppercase;letter-spacing:.05em}
+.btn-n:hover{background:var(--rust)}
+.btn-b{background:transparent;color:var(--mid);border:2px solid var(--border);border-radius:0;padding:14px 30px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .22s}
+.btn-b:hover{border-color:var(--mid);color:var(--dark)}
+.btn-gr{background:var(--gold);color:var(--hero);border:none;border-radius:0;padding:14px 30px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .22s;text-transform:uppercase;letter-spacing:.05em}
+.btn-gr:hover{background:var(--golds)}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+
+/* STEPS */
+.pb{height:3px;background:var(--border);border-radius:2px;margin-bottom:26px;overflow:hidden}
+.pbf{height:100%;background:var(--orange);border-radius:2px;transition:width .4s}
+.tabs{display:flex;background:var(--cream);border:1px solid var(--border);border-radius:4px;padding:5px;overflow-x:auto;margin-bottom:26px}
+.tab{flex:1;min-width:90px;padding:11px 12px;border-radius:11px;border:none;background:transparent;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .22s;display:flex;align-items:center;gap:6px;justify-content:center;white-space:nowrap}
+.tab.active{background:#fff;color:var(--dark);font-weight:600;box-shadow:var(--sh)}
+.tab .num{width:20px;height:20px;border-radius:50%;background:var(--border);font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700;transition:all .22s;flex-shrink:0}
+.tab.active .num{background:var(--orange);color:#fff}
+.tab.done .num{background:var(--green);color:#fff}
+.tab.done .ni{display:none}
+.tab.done .num::after{content:'✓'}
+.sp{display:none;animation:fu .3s ease}
+.sp.active{display:block}
+
+/* JOBS */
+.jgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:20px}
+.jcard{border:2px solid var(--border);border-radius:4px;padding:14px 10px;cursor:pointer;transition:all .2s;text-align:center;background:var(--cream);user-select:none}
+.jcard:hover{border-color:var(--os);background:var(--obg)}
+.jcard.sel{border-color:var(--orange);background:var(--obg)}
+.ji{font-size:24px;margin-bottom:6px}
+.jn{font-size:13px;font-weight:600}
+.je{font-size:11px;color:var(--green);font-weight:500;margin-top:2px}
+
+/* UPLOAD */
+.upl{border:2px dashed var(--border);border-radius:4px;padding:32px 20px;text-align:center;background:var(--cream);cursor:pointer;transition:all .25s;position:relative}
+.upl:hover,.upl.drag{border-color:var(--orange);background:var(--obg)}
+.upl input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;border:none;padding:0}
+.pgrid{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pimg{width:68px;height:68px;border-radius:8px;object-fit:cover;border:2px solid var(--border)}
+
+/* RESULT */
+.rh{background:var(--hero);color:#fff;border-radius:4px;padding:38px;position:relative;overflow:hidden;margin-bottom:16px}
+.rh::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 65% at 80% 20%,rgba(232,168,74,.18) 0%,transparent 60%)}
+.rl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--golds);font-weight:700;margin-bottom:10px;position:relative}
+.rr{font-family:'Playfair Display',serif;font-size:clamp(34px,6vw,60px);font-weight:900;letter-spacing:-2px;font-style:italic;position:relative;margin-bottom:6px}
+.rno{color:rgba(255,255,255,.4);font-size:13px;position:relative;margin-bottom:22px}
+.rrows{position:relative;display:flex;flex-direction:column;gap:8px}
+.rrow{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 15px}
+.rrn{font-size:14px;color:rgba(255,255,255,.65)}
+.rrv{font-size:15px;font-weight:600}
+.rrow.gr{background:rgba(46,125,86,.22);border:1px solid rgba(46,125,86,.3)}
+
+/* INFO */
+.ib{background:var(--gbg);border:1px solid rgba(46,125,86,.2);border-radius:4px;padding:14px 18px;display:flex;gap:11px;align-items:flex-start;margin-top:14px}
+.ib.or{background:var(--goldbg);border-color:rgba(232,168,74,.3)}
+.ib.bl{background:var(--bbg);border-color:rgba(37,99,235,.2)}
+.ibi{font-size:16px;flex-shrink:0;margin-top:1px}
+.ibt{font-size:13px;color:var(--mid);line-height:1.6}
+.ibt strong{color:var(--dark)}
+
+/* FEATURES */
+.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0;margin-top:48px;border-top:3px solid var(--hero);border-left:3px solid var(--hero)}
+.fc{background:#fff;border:1px solid var(--border);border-radius:4px;padding:26px;transition:all .25s}
+.fc:hover{background:var(--goldbg)}
+.fe{font-size:26px;margin-bottom:12px}
+.ft{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;margin-bottom:8px}
+.fd{color:var(--mid);font-size:14px;line-height:1.6}
+
+/* FIRMOR */
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:44px;border-top:3px solid var(--gold);border-left:3px solid var(--gold)}
+.fcard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:24px;transition:all .25s}
+.fcard:hover{background:rgba(232,168,74,.08)}
+.fi{font-size:24px;margin-bottom:12px}
+.ftit{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;margin-bottom:7px}
+.fdesc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6}
+.ppill{display:inline-block;margin-top:12px;background:var(--orange);border-radius:3px;padding:4px 12px;font-size:11px;font-weight:700;color:#fff}
+
+/* PORTAL */
+.ptbar{background:#FAF6EE;border-bottom:3px solid var(--hero) !important;border-bottom:1px solid var(--border);padding:13px 36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.plogo{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;cursor:pointer}
+.plogo span{color:var(--orange)}
+.puser{display:flex;align-items:center;gap:10px}
+.pav{width:32px;height:32px;border-radius:50%;background:var(--obg);display:flex;align-items:center;justify-content:center;font-size:14px}
+.ptabs{background:#fff;border-bottom:1px solid var(--border);display:flex;overflow-x:auto;padding:0 36px}
+.ptab{padding:15px 18px;font-size:14px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .2s;white-space:nowrap;border-top:none;border-left:none;border-right:none;background:none;font-family:'Outfit',sans-serif}
+.ptab:hover{color:var(--dark)}
+.ptab.active{color:var(--rust);border-bottom-color:var(--rust);font-weight:600}
+.ppanel{display:none;padding:32px 36px}
+.ppanel.active{display:block}
+
+/* BOARD */
+.agrid{display:flex;flex-direction:column;gap:12px}
+.ac{background:#fff;border:1px solid var(--border);border-radius:4px;padding:20px;display:flex;gap:16px;align-items:flex-start;transition:all .25s}
+.ac:hover{box-shadow:var(--shm);border-color:#ccc}
+.aav{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.abody{flex:1}
+.atop{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
+.aco{font-weight:700;font-size:14px}
+.badge{display:inline-flex;align-items:center;gap:4px;border-radius:3px;padding:3px 9px;font-size:11px;font-weight:700}
+.badge.hire{background:var(--gbg);color:var(--green)}
+.badge.offer{background:var(--bbg);color:var(--blue)}
+.badge.urg{background:#FEF2F2;color:#DC2626}
+.adesc{font-size:13px;color:var(--mid);margin-bottom:9px;line-height:1.5}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:4px;background:var(--cream);border-radius:3px;padding:3px 10px;font-size:12px;color:var(--mid);font-weight:500}
+.aacts{display:flex;flex-direction:column;gap:7px;flex-shrink:0}
+.bsm{padding:8px 16px;border-radius:3px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;border:none;transition:all .2s;white-space:nowrap}
+.bsm.or{background:var(--orange);color:#fff}.bsm.or:hover{background:#BF541F}
+.bsm.out{background:transparent;color:var(--mid);border:1.5px solid var(--border)}.bsm.out:hover{border-color:var(--mid);color:var(--dark)}
+.bsm.gr{background:var(--green);color:#fff}
+
+/* CHAT */
+.cwrap{display:grid;grid-template-columns:230px 1fr;gap:14px}
+.citem{display:flex;align-items:center;gap:9px;padding:10px 11px;border-radius:4px;cursor:pointer;margin-bottom:3px;transition:background .2s;border:none;background:none;font-family:'Outfit',sans-serif;width:100%;text-align:left}
+.citem:hover,.citem.active{background:var(--cream)}
+.cav{width:34px;height:34px;border-radius:50%;background:var(--obg);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.cname{font-size:13px;font-weight:600;color:var(--dark)}
+.clast{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
+.cbadge{width:18px;height:18px;border-radius:50%;background:var(--orange);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:auto}
+.carea{background:#fff;border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.chdr{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px}
+.chav{width:36px;height:36px;border-radius:50%;background:var(--obg);display:flex;align-items:center;justify-content:center;font-size:15px}
+.msgs{height:270px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:75%;display:flex;flex-direction:column;gap:3px}
+.msg.mine{align-self:flex-end;align-items:flex-end}
+.msg.theirs{align-self:flex-start;align-items:flex-start}
+.mb{padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.5}
+.msg.mine .mb{background:var(--orange);color:#fff;border-bottom-right-radius:4px}
+.msg.theirs .mb{background:var(--cream);color:var(--dark);border-bottom-left-radius:4px}
+.mt{font-size:11px;color:var(--muted)}
+.cir{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border)}
+.cir input{flex:1;padding:10px 15px;border:1.5px solid var(--border);border-radius:3px;font-size:14px;background:var(--cream);outline:none;font-family:'Outfit',sans-serif;transition:all .2s}
+.cir input:focus{border-color:var(--orange);background:#fff}
+.sbtn{background:var(--orange);border:none;border-radius:3px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all .2s;flex-shrink:0;color:#fff}
+.sbtn:hover{background:#BF541F}
+
+/* SETTINGS */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.scard{background:#fff;border:1px solid var(--border);border-radius:4px;padding:20px}
+.stit{font-weight:600;font-size:15px;margin-bottom:4px}
+.ssub{font-size:13px;color:var(--muted);margin-bottom:12px}
+
+/* PTABLE */
+.ptbl{border-collapse:collapse;width:100%;font-size:14px}
+.ptbl th{text-align:left;padding:9px 13px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--border)}
+.ptbl td{padding:11px 13px;border-bottom:1px solid var(--border)}
+.ptbl tr:last-child td{border-bottom:none}
+.ptbl tr:hover td{background:var(--cream)}
+
+/* LOGIN */
+.lwrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#F0E4D4;padding:24px}
+.lcard{background:#FAF6EE;border:1px solid var(--border);border-radius:0;border-top:4px solid var(--rust);padding:42px;width:100%;max-width:420px}
+.llgo{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:6px}
+.llgo span{color:var(--orange)}
+.ltit{font-family:'Playfair Display',serif;font-size:26px;font-weight:600;margin-bottom:6px}
+.lsub{color:var(--mid);font-size:14px;margin-bottom:26px;line-height:1.6}
+.div{display:flex;align-items:center;gap:12px;margin:16px 0}
+.div::before,.div::after{content:'';flex:1;height:1px;background:var(--border)}
+.div span{font-size:12px;color:var(--muted)}
+
+/* SIGNUP */
+.sbox{background:#fff;border:1px solid var(--border);border-radius:4px;padding:48px;max-width:640px;margin:0 auto;text-align:center}
+.sf{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.sf input{flex:1;min-width:180px;padding:13px 18px;border:1.5px solid var(--border);border-radius:3px;font-size:15px;background:var(--cream);outline:none;font-family:'Outfit',sans-serif;transition:all .2s}
+.sf input:focus{border-color:var(--orange);background:#fff}
+.stags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.stag{background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:5px 13px;font-size:12px;color:var(--mid);cursor:pointer;transition:all .2s}
+.stag:hover,.stag.sel{background:var(--obg);border-color:var(--orange);color:var(--orange)}
+
+/* CONTACT */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.cdet{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.cdi{width:36px;height:36px;border-radius:10px;background:var(--obg);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.cdt{font-size:14px;color:var(--mid)}
+.cdt strong{display:block;color:var(--dark);font-size:15px}
+
+/* FOOTER */
+.flinks a:hover{color:var(--golds)} footer{background:var(--hero2);color:rgba(255,255,255,.4);text-align:center;padding:38px 24px;font-size:13px}
+footer strong{color:rgba(255,255,255,.7)}
+.flinks{display:flex;justify-content:center;gap:24px;margin-bottom:12px;flex-wrap:wrap}
+.flinks a{color:rgba(255,255,255,.45);font-size:13px;cursor:pointer;transition:color .2s}
+.flinks a:hover{color:rgba(255,255,255,.75)}
+
+/* OVERLAY */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.ov.open{display:flex}
+.modal{background:#FAF6EE;border-radius:0;border-top:4px solid var(--rust);padding:36px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;animation:fu .3s ease;position:relative}
+.mtit{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;margin-bottom:6px}
+.msub{color:var(--mid);font-size:14px;margin-bottom:20px;line-height:1.6}
+.mcl{position:absolute;top:15px;right:15px;background:var(--border);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.mcl:hover{background:#D0C8BC}
+.tr{display:flex;gap:10px;margin-bottom:16px}
+.tb{flex:1;padding:13px 10px;border-radius:12px;border:2px solid var(--border);background:var(--warm);cursor:pointer;text-align:center;transition:all .2s;font-family:'Outfit',sans-serif}
+.tb:hover{border-color:var(--os)}
+.tb.sel{border-color:var(--orange);background:var(--obg)}
+.ti{font-size:20px;margin-bottom:4px}
+.tn{font-size:13px;font-weight:600}
+.ts{font-size:11px;color:var(--muted)}
+
+/* TOAST */
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:12px 24px;border-radius:3px;font-size:14px;font-weight:500;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.25);white-space:nowrap;animation:fu .3s ease;pointer-events:none}
+
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+@media(max-width:900px){
+  .nav{padding:13px 20px}.nav-links{display:none}
+  .sec{padding:64px 24px}.fgrid{grid-template-columns:1fr}
+  .cgrid{grid-template-columns:1fr;gap:24px}.r2{grid-template-columns:1fr}
+  .hstats{flex-wrap:wrap}.stat{min-width:50%;border-right:none;border-bottom:1px solid rgba(255,255,255,.08)}
+  .stat:nth-child(odd){border-right:1px solid rgba(255,255,255,.08)}
+  .cwrap{grid-template-columns:1fr}.sgrid{grid-template-columns:1fr}
+  .ptabs{padding:0 14px}.ppanel{padding:18px}
+}
+@media(max-width:600px){
+  .hero h1{letter-spacing:-1.5px}.hctas{flex-direction:column;align-items:center}
+  .btn-p,.btn-g{width:100%;max-width:300px}.card{padding:18px}.rh{padding:22px}
+  .sbox{padding:24px 16px}.ac{flex-direction:column}.aacts{flex-direction:row}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="logo" onclick="showPage('p-home')">Hantverks<span>pris</span></div>
+  <div class="nav-links">
+    <a onclick="goHome('#verktyget')">Beräkna pris</a>
+    <a onclick="goHome('#hur')">Hur det fungerar</a>
+    <a onclick="goHome('#firmor')">För företag</a>
+    <a onclick="goHome('#kontakt')">Kontakt</a>
+  </div>
+  <div class="nav-right">
+    <button class="btn-login" onclick="showPage('p-login')">🏢 Logga in som företag</button>
+    <button class="btn-cta" onclick="goHome('#verktyget')">Beräkna mitt jobb</button>
+  </div>
+</nav>
+
+<!-- PAGE: HOME -->
+<div class="page active" id="p-home">
+
+<section class="hero">
+  <div class="hglow"></div><div class="hgrain"></div>
+  <div class="hbody">
+    <div class="hbadge">Gratis · Inga konton krävs</div>
+    <h1>Vet vad jobbet kostar — <em>innan</em> vi ens träffas</h1>
+    <p class="hsub">Beskriv ditt projekt och få en prisuppskattning direkt. Med ROT-avdrag inräknat. Baserat på aktuella priser från 195 hantverkare 2026.</p>
+    <div class="hctas">
+      <button class="btn-p" onclick="sid('verktyget')">Räkna ut mitt jobb →</button>
+      <button class="btn-g" onclick="sid('firmor')">Jag är ett företag</button>
+    </div>
+  </div>
+  <div class="hstats">
+    <div class="stat"><div class="sn">762 kr</div><div class="sl">Snitt elektriker/tim 2026</div></div>
+    <div class="stat"><div class="sn">2 min</div><div class="sl">Tid för uppskattning</div></div>
+    <div class="stat"><div class="sn">±15%</div><div class="sl">Träffsäkerhet</div></div>
+    <div class="stat"><div class="sn">0 kr</div><div class="sl">Kostar att använda</div></div>
+  </div>
+</section>
+
+<!-- VERKTYGET -->
+<section class="sec" id="verktyget" style="background:#fff;border-top:6px solid var(--hero)">
+  <div class="si">
+    <div class="lbl">Prisuppskattning</div>
+    <h2 class="st">Beräkna ditt projekt</h2>
+    <p class="ss">Fyll i informationen nedan — ju mer du berättar, desto träffsäkrare uppskattning.</p>
+    <div class="pb"><div class="pbf" id="pgFill" style="width:25%"></div></div>
+    <div class="tabs">
+      <button class="tab active" onclick="goS(1)" id="t1"><span class="num"><span class="ni">1</span></span>Jobbtyp</button>
+      <button class="tab" onclick="goS(2)" id="t2"><span class="num"><span class="ni">2</span></span>Beskrivning</button>
+      <button class="tab" onclick="goS(3)" id="t3"><span class="num"><span class="ni">3</span></span>Bilder & mått</button>
+      <button class="tab" onclick="goS(4)" id="t4"><span class="num"><span class="ni">4</span></span>Uppskattning</button>
+    </div>
+
+    <div class="sp active" id="s1">
+      <div class="card">
+        <h3 class="ct">Vad behöver du hjälp med?</h3>
+        <p class="cd">Välj en eller flera kategorier. Priser från Byggahus.se 2026.</p>
+        <div class="jgrid" id="jobGrid"></div>
+        <div class="fld"><label>Något annat? <span class="h">Beskriv kortfattat</span></label><input type="text" id="customJob" placeholder="t.ex. Installation av laddbox, byte av elcentral…"></div>
+      </div>
+      <div class="acts"><button class="btn-n" onclick="goS(2)">Nästa steg →</button></div>
+    </div>
+
+    <div class="sp" id="s2">
+      <div class="card">
+        <h3 class="ct">Berätta om projektet</h3>
+        <p class="cd">Skriv precis som du pratar — inga facktermer nödvändiga!</p>
+        <div class="fld"><label>Beskriv vad du vill ha gjort</label><textarea id="desc" placeholder="t.ex. Jag vill flytta ett uttag i vardagsrummet ca 3 meter. Huset är från 70-talet…"></textarea></div>
+        <div class="r2">
+          <div class="fld"><label>Fastighetstyp</label><select id="propType"><option value="">Välj…</option><option>Villa / hus</option><option>Lägenhet</option><option>Kontor / lokal</option><option>Fritidshus</option></select></div>
+          <div class="fld"><label>Fastighetens ålder</label><select id="propAge"><option value="">Välj…</option><option value="ny">Nybyggd (efter 2000)</option><option value="modern">Modern (1970–2000)</option><option value="aldre">Äldre (1940–1970)</option><option value="gammal">Gammalt (före 1940)</option></select></div>
+        </div>
+        <div class="r2">
+          <div class="fld"><label>Stad / region</label><select id="region"><option value="stockholm">Stockholm (+15%)</option><option value="goteborg">Göteborg</option><option value="malmo">Malmö</option><option value="orebro">Örebro / mindre städer (−10%)</option><option value="norrland">Norrland (−5%)</option><option value="other">Annan ort</option></select></div>
+          <div class="fld"><label>Antal rum berörda</label><input type="number" id="numRooms" placeholder="1" min="1" max="20"></div>
+        </div>
+      </div>
+      <div class="acts"><button class="btn-b" onclick="goS(1)">← Tillbaka</button><button class="btn-n" onclick="goS(3)">Nästa steg →</button></div>
+    </div>
+
+    <div class="sp" id="s3">
+      <div class="card">
+        <h3 class="ct">Bilder & mått</h3>
+        <p class="cd">En bild gör uppskattningen mer träffsäker. Ange gärna mått om du har dem.</p>
+        <div class="upl" id="upArea">
+          <input type="file" accept="image/*" multiple onchange="handleImgs(this)">
+          <div style="font-size:30px;margin-bottom:8px">📸</div>
+          <div style="font-weight:600;font-size:15px;margin-bottom:4px">Klicka eller dra hit bilder</div>
+          <div style="color:var(--muted);font-size:13px">JPG, PNG, HEIC · Upp till 10 bilder</div>
+        </div>
+        <div class="pgrid" id="prevGrid"></div>
+        <div style="margin-top:20px">
+          <label style="display:block;font-size:13px;font-weight:600;margin-bottom:7px">Relevanta mått <span style="font-weight:400;color:var(--muted);font-size:12px;margin-left:4px">Valfritt</span></label>
+          <div id="measFields"><div class="r2" style="margin-bottom:10px"><input type="text" placeholder="Vad mäter du? (t.ex. kabellängd)" class="ml" style="padding:12px 14px;border:1.5px solid var(--border);border-radius:4px;font-size:14px;background:var(--cream);outline:none"><input type="number" placeholder="Meter / antal" class="mv" style="padding:12px 14px;border:1.5px solid var(--border);border-radius:4px;font-size:14px;background:var(--cream);outline:none"></div></div>
+          <button onclick="addMeas()" style="background:none;border:none;color:var(--orange);font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif">+ Lägg till mått</button>
+        </div>
+      </div>
+      <div class="ib"><span class="ibi">💡</span><p class="ibt"><strong>Tips:</strong> Kabelns längd och antal punkter påverkar priset mest. Ungefärliga mått räcker!</p></div>
+      <div class="acts"><button class="btn-b" onclick="goS(2)">← Tillbaka</button><button class="btn-n" onclick="calcAndShow()">Räkna ut nu →</button></div>
+    </div>
+
+    <div class="sp" id="s4">
+      <div class="rh">
+        <div class="rl">Uppskattad kostnad · inkl. moms</div>
+        <div class="rr" id="resRange">—</div>
+        <div class="rno">Baserat på marknadsdata 2026 · Byggahus.se</div>
+        <div class="rrows" id="resBdown"></div>
+      </div>
+      <div class="card">
+        <div style="display:inline-flex;align-items:center;gap:6px;background:var(--gbg);border-radius:3px;padding:5px 12px;font-size:12px;color:var(--green);font-weight:700;margin-bottom:14px">🌿 ROT-avdrag inräknat</div>
+        <h3 class="ct">Vad du faktiskt betalar</h3>
+        <p class="cd">Som privatperson får du dra av 30% av arbetskostnaden — upp till 50 000 kr/år.</p>
+        <div id="rotSec"></div>
+        <div class="ib"><span class="ibi">ℹ️</span><p class="ibt">Detta är en <strong>uppskattning</strong>. Slutpriset fastställs av hantverkaren efter besiktning.</p></div>
+      </div>
+      <div class="card" style="background:var(--cream)">
+        <h3 style="font-family:'Playfair Display',serif;font-size:17px;font-weight:600;margin-bottom:6px">📊 Aktuella timpriser 2026</h3>
+        <p style="color:var(--mid);font-size:13px;margin-bottom:12px">Intervjuer med 195 hantverkare · Byggahus.se april 2026</p>
+        <table class="ptbl">
+          <thead><tr><th>Yrkeskategori</th><th>Min</th><th>Snitt</th><th>Max</th></tr></thead>
+          <tbody>
+            <tr><td>⚡ Elektriker</td><td>669 kr</td><td><strong>762 kr</strong></td><td>1 000 kr</td></tr>
+            <tr><td>🔧 Rörmokare / VVS</td><td>638 kr</td><td><strong>843 kr</strong></td><td>1 048 kr</td></tr>
+            <tr><td>🪚 Snickare</td><td>462 kr</td><td><strong>633 kr</strong></td><td>828 kr</td></tr>
+            <tr><td>🎨 Målare</td><td>430 kr</td><td><strong>570 kr</strong></td><td>750 kr</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="acts">
+        <button class="btn-b" onclick="goS(3)">← Ändra</button>
+        <button class="btn-gr" onclick="ov('quoteModal')">📩 Skicka förfrågan</button>
+        <button class="btn-n" onclick="window.print()">🖨 Skriv ut</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HUR -->
+<section class="sec" id="hur" style="background:#F2EBE0">
+  <div class="si">
+    <div class="lbl">Hur det fungerar</div>
+    <h2 class="st">Enkelt för kunden.<br>Lönsamt för firman.</h2>
+    <p class="ss">Hantverkspris tar bort den vanligaste orsaken till att hantverksjobb aldrig blir av.</p>
+    <div class="fg">
+      <div class="fc"><div class="fe">🧠</div><h3 class="ft">Inga besök krävs</h3><p class="fd">Du behöver inte boka ett kostnadsbesök bara för att ta reda på om du har råd. Svaret kommer direkt.</p></div>
+      <div class="fc"><div class="fe">💸</div><h3 class="ft">ROT-avdrag automatiskt</h3><p class="fd">Vi räknar alltid ut vad du betalar efter ROT. Inga överraskningar — du ser slutsiffran direkt.</p></div>
+      <div class="fc"><div class="fe">📊</div><h3 class="ft">Riktiga marknadsdata</h3><p class="fd">Priserna baseras på intervjuer med 195 hantverkare i Sverige 2026 — inte gissningar.</p></div>
+      <div class="fc"><div class="fe">📸</div><h3 class="ft">Bilder & mått välkomna</h3><p class="fd">Ladda upp foton och ange mått. Ju mer info, desto träffsäkrare uppskattning.</p></div>
+      <div class="fc"><div class="fe">⚡</div><h3 class="ft">2 minuter, inte 2 veckor</h3><p class="fd">Hela processen tar under 2 minuter. Snabbare än att ringa och vänta i telefonkö.</p></div>
+      <div class="fc"><div class="fe">🔒</div><h3 class="ft">Helt gratis för kunden</h3><p class="fd">Inga konton, inga dolda avgifter. Verktyget är och förblir gratis för privatpersoner.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FIRMOR -->
+<section class="sec" id="firmor" style="background:var(--hero2);color:#fff">
+  <div class="si">
+    <div class="lbl" style="color:var(--os)"><span style="background:var(--os);display:inline-block;width:20px;height:2px;border-radius:2px;margin-right:8px"></span>För hantverksfirmor</div>
+    <h2 class="st" style="color:#fff">Få fler kunder som redan bestämt sig.</h2>
+    <p class="ss">Kunder som räknat ut priset och skickat en förfrågan är 3× mer benägna att boka.</p>
+    <div class="fgrid">
+      <div class="fcard"><div class="fi">💰</div><h3 class="ftit">Sätt era egna priser</h3><p class="fdesc">Fyll i era timpriser och fasta kostnader. Kundernas uppskattningar baseras på era faktiska priser.</p><span class="ppill">Bas · 499 kr/mån</span></div>
+      <div class="fcard"><div class="fi">📩</div><h3 class="ftit">Ta emot förfrågningar</h3><p class="fdesc">Kunder skickar färdiga förfrågningar med beskrivning, bilder och uppskattning direkt till er inkorg.</p><span class="ppill">Proffs · 899 kr/mån</span></div>
+      <div class="fcard"><div class="fi">🤝</div><h3 class="ftit">Hyr in & hyr ut personal</h3><p class="fdesc">Annonsera när ni behöver extra folk — eller erbjud era killar till andra firmor när ni har ledigt.</p><span class="ppill">Proffs · 899 kr/mån</span></div>
+    </div>
+    <div style="margin-top:32px;text-align:center">
+      <button class="btn-p" onclick="ov('firmaModal')" style="font-size:16px;padding:17px 40px">Bli pilotföretag — gratis i 2 månader →</button>
+      <p style="margin-top:12px;font-size:13px;color:rgba(255,255,255,.35)">Inga kortuppgifter krävs · Avsluta när som helst</p>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNUP -->
+<section class="sec" id="signup" style="background:#FAF6EE;border-top:3px solid var(--hero)">
+  <div class="si"><div class="sbox">
+    <div class="lbl" style="justify-content:center;margin-bottom:14px">Håll dig uppdaterad</div>
+    <h2 class="st">Vill du veta när vi lanserar?</h2>
+    <p style="color:var(--mid);font-size:16px;line-height:1.65;margin-bottom:26px">Lämna din e-post så hör vi av oss. Inga spam — bara det viktiga.</p>
+    <div class="sf">
+      <input type="email" id="signupEmail" placeholder="din@email.se">
+      <button class="btn-p" onclick="doSignup()" style="border-radius:3px;padding:13px 26px;font-size:15px">Anmäl mig</button>
+    </div>
+    <div class="stags">
+      <span class="stag" onclick="this.classList.toggle('sel')">⚡ Elektriker</span>
+      <span class="stag" onclick="this.classList.toggle('sel')">🔧 VVS</span>
+      <span class="stag" onclick="this.classList.toggle('sel')">🪚 Snickeri</span>
+      <span class="stag" onclick="this.classList.toggle('sel')">🎨 Måleri</span>
+      <span class="stag" onclick="this.classList.toggle('sel')">🏠 Privatperson</span>
+    </div>
+  </div></div>
+</section>
+
+<!-- KONTAKT -->
+<section class="sec" id="kontakt" style="background:#fff;border-top:3px solid var(--hero)">
+  <div class="si"><div class="cgrid">
+    <div>
+      <div class="lbl">Kontakt</div>
+      <h2 class="st">Vi svarar inom 24 timmar</h2>
+      <p class="ss">Frågor om prisuppskattningen, vill bli pilotföretag eller bara vill säga hej — hör av dig.</p>
+      <div class="cdet"><div class="cdi">✉️</div><div class="cdt"><strong>kontakt@hantverkspris.se</strong>Mejla oss direkt</div></div>
+      <div class="cdet"><div class="cdi">📍</div><div class="cdt"><strong>Stockholm, Sverige</strong>Vi jobbar i hela landet</div></div>
+      <div class="cdet"><div class="cdi">⏱</div><div class="cdt"><strong>Svarstid under 24h</strong>Vardagar 8–18</div></div>
+    </div>
+    <div class="card">
+      <h3 class="ct">Skicka ett meddelande</h3>
+      <p class="cd">Vi återkommer snart.</p>
+      <div class="fld"><label>Ditt namn</label><input type="text" id="cName" placeholder="Anna Svensson"></div>
+      <div class="fld"><label>E-post</label><input type="email" id="cEmail" placeholder="anna@email.se"></div>
+      <div class="fld"><label>Gäller</label><select id="cType"><option>Fråga om prisuppskattningen</option><option>Bli pilotföretag</option><option>Samarbete / partnerskap</option><option>Annat</option></select></div>
+      <div class="fld"><label>Meddelande</label><textarea id="cMsg" placeholder="Berätta lite mer…"></textarea></div>
+      <button class="btn-n" style="width:100%" onclick="doContact()">Skicka meddelande →</button>
+    </div>
+  </div></div>
+</section>
+
+<footer>
+  <div class="flinks">
+    <a onclick="sid('verktyget')">Beräkna pris</a>
+    <a onclick="sid('firmor')">För företag</a>
+    <a onclick="sid('kontakt')">Kontakt</a>
+    <a onclick="showPage('p-login')">Företagsportal</a>
+  </div>
+  <p><strong>Hantverkspris</strong> — Rätt pris, rätt från start · © 2026</p>
+  <p style="margin-top:5px;font-size:11px">Priser baserade på Byggahus.se marknadsundersökning, april 2026 · 195 hantverkare</p>
+</footer>
+</div>
+
+<!-- PAGE: LOGIN -->
+<div class="page" id="p-login">
+  <div style="position:fixed;top:18px;left:20px;z-index:10">
+    <button onclick="showPage('p-home')" style="background:rgba(0,0,0,.06);border:none;border-radius:3px;padding:8px 18px;cursor:pointer;font-size:13px;font-weight:500;font-family:'Outfit',sans-serif;color:var(--mid)">← Tillbaka</button>
+  </div>
+  <div class="lwrap">
+    <div class="lcard">
+      <div class="llgo">Hantverks<span>pris</span></div>
+      <h2 class="ltit">Välkommen tillbaka</h2>
+      <p class="lsub">Logga in till företagsportalen för att hantera priser, förfrågningar och samarbeten med andra firmor.</p>
+      <div class="fld"><label>E-post</label><input type="email" id="loginEmail" placeholder="info@ertforetag.se"></div>
+      <div class="fld"><label>Lösenord</label><input type="password" id="loginPw" placeholder="••••••••"></div>
+      <button class="btn-p" style="width:100%;margin-top:8px;padding:14px" onclick="doLogin()">Logga in →</button>
+      <div class="div"><span>eller</span></div>
+      <button class="btn-n" style="width:100%;padding:13px;background:var(--dark)" onclick="doLogin()">🆕 Skapa nytt företagskonto</button>
+      <p style="text-align:center;margin-top:14px;font-size:13px;color:var(--muted)">Inget konto? <button style="background:none;border:none;color:var(--orange);font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;text-decoration:underline" onclick="doLogin()">Registrera gratis</button></p>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: PORTAL -->
+<div class="page" id="p-portal">
+  <div style="background:#F2EBE0;min-height:100vh">
+    <div class="ptbar">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div class="plogo" onclick="showPage('p-home')">Hantverks<span>pris</span></div>
+        <span style="font-size:13px;color:var(--muted)">Företagsportal</span>
+      </div>
+      <div class="puser">
+        <div class="pav">⚡</div>
+        <span style="font-size:13px;font-weight:600" id="portalName">Svensson El AB</span>
+        <button class="bsm out" onclick="showPage('p-home')">Logga ut</button>
+      </div>
+    </div>
+    <div class="ptabs">
+      <button class="ptab active" onclick="showPTab(this,'pt-board')">📋 Personalannonsering</button>
+      <button class="ptab" onclick="showPTab(this,'pt-prices')">💰 Mina priser</button>
+      <button class="ptab" onclick="showPTab(this,'pt-requests')">📩 Kundförfrågningar</button>
+      <button class="ptab" onclick="showPTab(this,'pt-messages')">💬 Meddelanden</button>
+      <button class="ptab" onclick="showPTab(this,'pt-settings')">⚙️ Inställningar</button>
+    </div>
+
+    <!-- BOARD -->
+    <div class="ppanel active" id="pt-board">
+      <div style="max-width:960px;margin:0 auto">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:22px">
+          <div><h2 style="font-family:'Playfair Display',serif;font-size:26px;font-weight:600;margin-bottom:4px">Hyr in & hyr ut personal</h2><p style="color:var(--mid);font-size:15px">Behöver ni extra folk? Eller har ni lediga killar? Annonsera direkt.</p></div>
+          <button class="btn-p" onclick="ov('postAdModal')" style="white-space:nowrap">+ Lägg ut annons</button>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px">
+          <button class="bsm" style="background:var(--dark);color:#fff;border-radius:3px;border:none">Alla annonser</button>
+          <button class="bsm out" style="border-radius:3px">🟢 Söker personal</button>
+          <button class="bsm out" style="border-radius:3px">🔵 Erbjuder personal</button>
+          <button class="bsm out" style="border-radius:3px">🔴 Akut</button>
+        </div>
+        <div class="agrid" id="adsGrid"></div>
+      </div>
+    </div>
+
+    <!-- PRISER -->
+    <div class="ppanel" id="pt-prices">
+      <div style="max-width:860px;margin:0 auto">
+        <h2 style="font-family:'Playfair Display',serif;font-size:26px;font-weight:600;margin-bottom:4px">Era timpriser & standardjobb</h2>
+        <p style="color:var(--mid);font-size:15px;margin-bottom:24px">Dessa priser används när kunder beräknar sin uppskattning via Hantverkspris.</p>
+        <div class="card">
+          <h3 class="ct">Grundpriser</h3>
+          <p class="cd">Jämförelsepriser från Byggahus.se 2026 visas bredvid.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+            <div class="fld"><label>Timpris (inkl. moms)</label><input type="number" value="850" placeholder="762"><div style="font-size:11px;color:var(--muted);margin-top:3px">Marknadssnitt: 762 kr</div></div>
+            <div class="fld"><label>Startavgift / resekostnad</label><input type="number" value="500" placeholder="450"><div style="font-size:11px;color:var(--muted);margin-top:3px">Typiskt: 400–500 kr</div></div>
+            <div class="fld"><label>Minimibelopp</label><input type="number" value="1500" placeholder="1500"><div style="font-size:11px;color:var(--muted);margin-top:3px">Vanligtvis 1–2 tim</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="ct">Fasta priser på vanliga arbeten</h3>
+          <p class="cd">Kunden ser dessa direkt i sin uppskattning.</p>
+          <table class="ptbl">
+            <thead><tr><th>Tjänst</th><th>Ert pris (inkl. moms)</th><th>Marknadssnitt 2026</th></tr></thead>
+            <tbody>
+              <tr><td>🔌 Flytta uttag</td><td><input type="text" placeholder="t.ex. 1 800 kr" style="border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:13px;width:140px;background:var(--cream);outline:none"></td><td style="font-size:13px;color:var(--muted)">800–2000 kr</td></tr>
+              <tr><td>💡 Lampinstallation</td><td><input type="text" placeholder="t.ex. 700 kr" style="border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:13px;width:140px;background:var(--cream);outline:none"></td><td style="font-size:13px;color:var(--muted)">300–700 kr/pkt</td></tr>
+              <tr><td>🚗 Laddbox EV</td><td><input type="text" placeholder="t.ex. 12 000 kr" style="border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:13px;width:140px;background:var(--cream);outline:none"></td><td style="font-size:13px;color:var(--muted)">8000–20 000 kr</td></tr>
+              <tr><td>🛡️ Jordfelsbrytare</td><td><input type="text" placeholder="t.ex. 2 500 kr" style="border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:13px;width:140px;background:var(--cream);outline:none"></td><td style="font-size:13px;color:var(--muted)">ca 2 500 kr</td></tr>
+            </tbody>
+          </table>
+          <button class="btn-n" style="margin-top:16px" onclick="toast('✅ Priser sparade!')">Spara priser ✓</button>
+        </div>
+        <div class="ib bl"><span class="ibi">📊</span><p class="ibt"><strong>Marknaddata 2026:</strong> Elektriker 669–1000 kr/tim (snitt 762), Rörmokare 638–1048 kr (snitt 843), Snickare 462–828 kr (snitt 633). Källa: Byggahus.se.</p></div>
+      </div>
+    </div>
+
+    <!-- REQUESTS -->
+    <div class="ppanel" id="pt-requests">
+      <div style="max-width:860px;margin:0 auto">
+        <h2 style="font-family:'Playfair Display',serif;font-size:26px;font-weight:600;margin-bottom:4px">Inkomna förfrågningar</h2>
+        <p style="color:var(--mid);font-size:15px;margin-bottom:22px">Kunder som räknat ut ett pris och tryckt "Skicka förfrågan" hamnar här.</p>
+        <div class="agrid" id="reqGrid"></div>
+      </div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div class="ppanel" id="pt-messages">
+      <div style="max-width:860px;margin:0 auto">
+        <h2 style="font-family:'Playfair Display',serif;font-size:26px;font-weight:600;margin-bottom:16px">Chatt med andra firmor</h2>
+        <div class="cwrap">
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px">Konversationer</div>
+            <div id="convList"></div>
+          </div>
+          <div class="carea">
+            <div class="chdr">
+              <div class="chav">🔧</div>
+              <div><div style="font-size:15px;font-weight:600" id="chatWith">Lindqvist VVS AB</div><div style="font-size:12px;color:var(--green);font-weight:500">● Online</div></div>
+            </div>
+            <div class="msgs" id="msgArea"></div>
+            <div class="cir">
+              <input type="text" id="chatInput" placeholder="Skriv ett meddelande…" onkeydown="if(event.key==='Enter')sendMsg()">
+              <button class="sbtn" onclick="sendMsg()">→</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="ppanel" id="pt-settings">
+      <div style="max-width:860px;margin:0 auto">
+        <h2 style="font-family:'Playfair Display',serif;font-size:26px;font-weight:600;margin-bottom:20px">Företagsprofil</h2>
+        <div class="sgrid">
+          <div class="scard"><div class="stit">Företagsinfo</div><div class="ssub">Visas för kunder och andra firmor</div><div class="fld"><label>Företagsnamn</label><input type="text" value="Svensson El AB"></div><div class="fld"><label>Organisationsnr</label><input type="text" placeholder="556xxx-xxxx"></div><div class="fld"><label>Stad</label><input type="text" placeholder="Stockholm"></div></div>
+          <div class="scard"><div class="stit">Kontaktuppgifter</div><div class="ssub">Används för kundkontakt och firmor</div><div class="fld"><label>E-post</label><input type="email" placeholder="info@svenssone.se"></div><div class="fld"><label>Telefon</label><input type="tel" placeholder="08-123 45 67"></div><div class="fld"><label>Hemsida</label><input type="text" placeholder="www.svenssone.se"></div></div>
+          <div class="scard"><div class="stit">Yrkeskategorier</div><div class="ssub">Vad arbetar ni med?</div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:4px"><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px"><input type="checkbox" checked style="width:auto"> ⚡ Elektriker</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px"><input type="checkbox" style="width:auto"> 🔧 VVS</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px"><input type="checkbox" style="width:auto"> 🪚 Snickeri</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px"><input type="checkbox" style="width:auto"> 🎨 Måleri</label></div></div>
+          <div class="scard"><div class="stit">Personalstyrka</div><div class="ssub">Hur stor är er firma?</div><div class="fld"><label>Antal anställda</label><input type="number" value="5"></div><div class="fld"><label>Normalt antal ute på jobb</label><input type="number" value="3"></div></div>
+        </div>
+        <button class="btn-n" style="margin-top:14px" onclick="toast('✅ Inställningar sparade!')">Spara ändringar ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="ov" id="quoteModal">
+  <div class="modal">
+    <button class="mcl" onclick="cov('quoteModal')">×</button>
+    <h2 class="mtit">Skicka förfrågan</h2>
+    <p class="msub">Din uppskattning och beskrivning skickas direkt till hantverkaren.</p>
+    <div class="fld"><label>Ditt namn</label><input type="text" id="qName" placeholder="Anna Svensson"></div>
+    <div class="r2">
+      <div class="fld"><label>E-post</label><input type="email" id="qEmail" placeholder="anna@email.se"></div>
+      <div class="fld"><label>Telefon</label><input type="tel" id="qPhone" placeholder="070-123 45 67"></div>
+    </div>
+    <div class="fld"><label>Önskat kontaktdatum <span class="h">Valfritt</span></label><input type="text" placeholder="t.ex. Tisdag förmiddag"></div>
+    <div class="ib" style="margin-bottom:16px"><span class="ibi">✅</span><p class="ibt">Uppskattning och beskrivning inkluderas automatiskt.</p></div>
+    <button class="btn-n" style="width:100%" onclick="doQuote()">Skicka förfrågan →</button>
+  </div>
+</div>
+
+<div class="ov" id="firmaModal">
+  <div class="modal">
+    <button class="mcl" onclick="cov('firmaModal')">×</button>
+    <h2 class="mtit">Bli pilotföretag</h2>
+    <p class="msub">Gratis de första 2 månaderna. Vi sätter upp allt — ni behöver bara sätta era priser.</p>
+    <div class="fld"><label>Företagsnamn</label><input type="text" id="fName" placeholder="Svensson El AB"></div>
+    <div class="fld"><label>Kontaktperson</label><input type="text" placeholder="Erik Svensson"></div>
+    <div class="r2">
+      <div class="fld"><label>E-post</label><input type="email" id="fEmail" placeholder="erik@svenssone.se"></div>
+      <div class="fld"><label>Telefon</label><input type="tel" placeholder="070-123 45 67"></div>
+    </div>
+    <div class="fld"><label>Bransch</label><select><option>⚡ Elektriker</option><option>🔧 VVS / Rörmokare</option><option>🪚 Snickeri / Bygg</option><option>🎨 Måleri</option><option>Annan</option></select></div>
+    <div class="ib or" style="margin-bottom:16px"><span class="ibi">🎁</span><p class="ibt"><strong>2 månader helt gratis.</strong> Ingen kortinfo krävs. Vi hör av oss inom 24h för onboarding.</p></div>
+    <button class="btn-gr" style="width:100%" onclick="doFirma()">Anmäl oss som pilotföretag →</button>
+  </div>
+</div>
+
+<div class="ov" id="postAdModal">
+  <div class="modal">
+    <button class="mcl" onclick="cov('postAdModal')">×</button>
+    <h2 class="mtit">Lägg ut annons</h2>
+    <p class="msub">Berätta vad ni behöver eller erbjuder. Andra firmor i nätverket ser det direkt.</p>
+    <div class="tr">
+      <div class="tb sel" onclick="selAT(this,'hire')"><div class="ti">🙋</div><div class="tn">Vi söker personal</div><div class="ts">Behöver inhyrd kraft</div></div>
+      <div class="tb" onclick="selAT(this,'offer')"><div class="ti">🤝</div><div class="tn">Vi erbjuder personal</div><div class="ts">Har lediga grabbar</div></div>
+    </div>
+    <div class="r2">
+      <div class="fld"><label>Antal personer</label><input type="number" id="adPpl" placeholder="t.ex. 3" min="1"></div>
+      <div class="fld"><label>Yrkeskompetens</label><select id="adSkl"><option>⚡ Elektriker</option><option>🔧 VVS/Rörmokare</option><option>🪚 Snickare</option><option>🎨 Målare</option><option>🔩 Allmän hantverkare</option></select></div>
+    </div>
+    <div class="r2">
+      <div class="fld"><label>Startdatum</label><input type="text" id="adSt" placeholder="t.ex. Måndag 24 mars"></div>
+      <div class="fld"><label>Antal dagar / veckor</label><input type="text" id="adDur" placeholder="t.ex. 3 dagar"></div>
+    </div>
+    <div class="fld"><label>Plats / stad</label><input type="text" id="adLoc" placeholder="t.ex. Stockholm, Kista"></div>
+    <div class="fld"><label>Beskriv jobbet</label><textarea id="adDesc" placeholder="Vad ska göras? Vilket material och verktyg ingår?"></textarea></div>
+    <div class="r2">
+      <div class="fld"><label>Ersättning <span class="h">kr/dag eller kr/tim</span></label><input type="text" id="adRate" placeholder="t.ex. 2 500 kr/dag"></div>
+      <div class="fld"><label>Kontaktperson</label><input type="text" id="adCtc" placeholder="t.ex. Erik Svensson"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px"><input type="checkbox" id="adUrg" style="width:auto"><label for="adUrg" style="font-size:14px;cursor:pointer;margin:0">🔴 Markera som akut</label></div>
+    <button class="btn-n" style="width:100%" onclick="publishAd()">Publicera annons →</button>
+  </div>
+</div>
+
+<script>
+// ═══ STATE ═══
+const S={step:1,jobs:new Set(),adType:'hire',co:'Svensson El AB'};
+
+// ═══ NAVIGATION ═══
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
+function goHome(hash){showPage('p-home');setTimeout(()=>{const el=document.querySelector(hash);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},60)}
+function sid(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})}
+window.addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('sc',window.scrollY>40));
+
+// ═══ LOGIN ═══
+function doLogin(){
+  const em=document.getElementById('loginEmail').value.trim();
+  const n=em?em.split('@')[0].replace(/\./g,' ')+' AB':'Svensson El AB';
+  document.getElementById('portalName').textContent=n;
+  S.co=n;showPage('p-portal');renderPortal();
+}
+
+// ═══ PORTAL TABS ═══
+function showPTab(btn,id){
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ppanel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');document.getElementById(id).classList.add('active');
+}
+
+// ═══ JOBS ═══
+const JOBS=[
+  {id:'ut',name:'Flytta uttag',icon:'🔌',h:1.5,m:300,note:'800–2000 kr'},
+  {id:'lm',name:'Lampinstallation',icon:'💡',h:1.0,m:200,note:'300–700 kr/pkt'},
+  {id:'sp',name:'Spotlights (4 st)',icon:'✨',h:2.5,m:800,note:'3000–6000 kr'},
+  {id:'jf',name:'Jordfelsbrytare',icon:'🛡️',h:1.5,m:900,note:'ca 2500 kr'},
+  {id:'ce',name:'Byta elcentral',icon:'⚡',h:6.0,m:5000,note:'15000–40000 kr'},
+  {id:'lb',name:'Laddbox EV',icon:'🚗',h:4.5,m:7000,note:'8000–20000 kr'},
+  {id:'ba',name:'Badrumsinstallation',icon:'🛁',h:5.0,m:3000,note:'8000–15000 kr'},
+  {id:'kr',name:'Byta blandare',icon:'🚿',h:1.5,m:600,note:'ca 2000 kr'},
+  {id:'to',name:'Installera toalett',icon:'🪠',h:2.5,m:1500,note:'3500–4000 kr'},
+  {id:'sn',name:'Snickeriarbete',icon:'🪚',h:4.0,m:1200,note:'633 kr/tim'},
+  {id:'ml',name:'Målning',icon:'🎨',h:6.0,m:1800,note:'570 kr/tim'},
+  {id:'an',name:'Annat',icon:'🔩',h:2.0,m:500,note:'varierar'},
+];
+const RM={stockholm:1.15,goteborg:1.05,malmo:1.05,orebro:0.90,norrland:0.95,other:1.0};
+
+function renderJobs(){
+  document.getElementById('jobGrid').innerHTML=JOBS.map(j=>`
+    <div class="jcard ${S.jobs.has(j.id)?'sel':''}" onclick="togJob('${j.id}')">
+      <div class="ji">${j.icon}</div><div class="jn">${j.name}</div><div class="je">${j.note}</div>
+    </div>`).join('');
+}
+function togJob(id){S.jobs.has(id)?S.jobs.delete(id):S.jobs.add(id);renderJobs()}
+
+// ═══ STEPS ═══
+function goS(n){
+  document.getElementById('s'+S.step).classList.remove('active');
+  const pv=document.getElementById('t'+S.step);
+  pv.classList.remove('active');if(n>S.step)pv.classList.add('done');
+  S.step=n;
+  document.getElementById('s'+n).classList.add('active');
+  const cur=document.getElementById('t'+n);
+  cur.classList.add('active');cur.classList.remove('done');
+  document.getElementById('pgFill').style.width=(n/4*100)+'%';
+  document.getElementById('verktyget').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ═══ CALCULATE ═══
+function calcAndShow(){
+  goS(4);
+  const jobs=JOBS.filter(j=>S.jobs.has(j.id));
+  const rooms=parseInt(document.getElementById('numRooms').value)||1;
+  const age=document.getElementById('propAge').value;
+  const reg=document.getElementById('region').value||'other';
+  const af=age==='gammal'?1.45:age==='aldre'?1.25:age==='modern'?1.1:1.0;
+  const rm=RM[reg]||1.0;
+  let xm=0;document.querySelectorAll('.mv').forEach(i=>{const v=parseFloat(i.value);if(!isNaN(v))xm+=v*30});
+  let lab=0,mat=0;
+  if(!jobs.length&&!document.getElementById('customJob').value.trim()){lab=2*762*af*rm;mat=600}
+  else{jobs.forEach(j=>{lab+=j.h*762*af*rm*(1+.07*(rooms-1));mat+=j.m});if(document.getElementById('customJob').value.trim()){lab+=2*762*af*rm;mat+=600}}
+  mat+=xm;
+  const tr=450,sub=Math.max(Math.round(lab+mat+tr),1500);
+  const lo=Math.round(sub*.87),hi=Math.round(sub*1.18);
+  const rot=Math.min(Math.round(lab*.3),50000),aft=sub-rot;
+  document.getElementById('resRange').textContent=`${fmt(lo)} – ${fmt(hi)} kr`;
+  document.getElementById('resBdown').innerHTML=`
+    <div class="rrow"><span class="rrn">🔧 Arbete</span><span class="rrv">${fmt(Math.round(lab))} kr</span></div>
+    <div class="rrow"><span class="rrn">📦 Material</span><span class="rrv">${fmt(Math.round(mat))} kr</span></div>
+    <div class="rrow"><span class="rrn">🚗 Startavgift</span><span class="rrv">${fmt(tr)} kr</span></div>`;
+  document.getElementById('rotSec').innerHTML=`
+    <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:14px">
+      <div class="rrow" style="background:var(--cream)"><span style="font-size:14px;font-weight:500">Totalkostnad (inkl. moms)</span><span style="font-size:16px;font-weight:700">${fmt(sub)} kr</span></div>
+      <div class="rrow gr"><span style="font-size:14px;font-weight:500;color:var(--green)">− ROT-avdrag (30% av arbete)</span><span style="font-size:16px;font-weight:700;color:var(--orange)">− ${fmt(rot)} kr</span></div>
+      <div class="rrow" style="background:var(--dark);color:#fff"><span style="font-size:15px;font-weight:600">Du betalar ungefär</span><span style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--os)">${fmt(aft)} kr</span></div>
+    </div>`;
+}
+function fmt(n){return Math.round(n).toLocaleString('sv-SE')}
+
+// ═══ UPLOAD & MEAS ═══
+function handleImgs(inp){
+  const g=document.getElementById('prevGrid');
+  Array.from(inp.files).slice(0,10).forEach(f=>{const i=document.createElement('img');i.src=URL.createObjectURL(f);i.className='pimg';g.appendChild(i)});
+  const u=document.getElementById('upArea');u.style.borderColor='var(--green)';u.style.background='var(--gbg)';
+}
+function addMeas(){
+  const c=document.getElementById('measFields'),d=document.createElement('div');
+  d.className='r2';d.style.marginBottom='10px';
+  d.innerHTML='<input type="text" placeholder="Vad mäter du?" class="ml" style="padding:12px 14px;border:1.5px solid var(--border);border-radius:4px;font-size:14px;background:var(--cream);outline:none"><input type="number" placeholder="Meter / antal" class="mv" style="padding:12px 14px;border:1.5px solid var(--border);border-radius:4px;font-size:14px;background:var(--cream);outline:none">';
+  c.appendChild(d);
+}
+
+// ═══ PORTAL DATA ═══
+const ADS=[
+  {type:'hire',urg:true,co:'Bergström & Söner El',icon:'⚡',bg:'#FEF0E8',title:'Söker 4 elektriker för ROT-renovering i Solna',ppl:4,skl:'Elektriker',st:'Måndag 24 mars',dur:'3 veckor',loc:'Solna, Stockholm',rate:'2 800 kr/dag',desc:'Söker erfarna elektriker för kabelstege, uttag och belysning. Lyft och material fixar vi.'},
+  {type:'offer',urg:false,co:'Lindqvist VVS AB',icon:'🔧',bg:'#EFF6FF',title:'Erbjuder 2 erfarna rörmokare vecka 13–14',ppl:2,skl:'Rörmokare',st:'31 mars',dur:'2 veckor',loc:'Göteborg',rate:'2 400 kr/dag',desc:'Två killar lediga vecka 13–14. Erfarenhet av badrumsrenovering och stambyte.'},
+  {type:'hire',urg:false,co:'Karlsson Snickeri',icon:'🪚',bg:'#F5F3FF',title:'Söker 2 snickare med formgjutningserfarenhet, Malmö',ppl:2,skl:'Snickare',st:'7 april',dur:'1 vecka',loc:'Malmö',rate:'2 600 kr/dag',desc:'Nyproduktionsprojekt i Malmö — söker snickare med erfarenhet av formgjutning.'},
+  {type:'offer',urg:true,co:'Ekström El & Bygg',icon:'✨',bg:'#FEF0E8',title:'Kan erbjuda 1 elektriker AKUT från imorgon',ppl:1,skl:'Elektriker',st:'Imorgon',dur:'Flexibelt',loc:'Kista, Stockholm',rate:'Diskuterbart',desc:'Jobb inställt i sista minuten. Har en elektriker ledig från imorgon.'},
+];
+const REQS=[
+  {name:'Anna S.',job:'Flytta 2 uttag',area:'Bromma, Stockholm',est:'2 400–3 100 kr',date:'Idag 14:32',icon:'🏠'},
+  {name:'Erik L.',job:'Installera laddbox',area:'Nacka, Stockholm',est:'12 000–18 000 kr',date:'Igår 09:15',icon:'🚗'},
+  {name:'Maria K.',job:'Badrumsinstallation',area:'Uppsala',est:'9 000–14 000 kr',date:'18 mars',icon:'🛁'},
+];
+const CONVS=[
+  {name:'Lindqvist VVS AB',last:'Kul! Ring mig imorgon.',time:'Nu',unr:2},
+  {name:'Bergström El',last:'Vi fixar det!',time:'Igår',unr:0},
+  {name:'Karlsson Snick.',last:'Okej, låter bra!',time:'18 mar',unr:0},
+];
+const MSGS=[
+  {mine:false,txt:'Hej! Såg er annons på Hantverkspris. Har ni fortfarande 3 elektriker att erbjuda vecka 13?'},
+  {mine:true,txt:'Hej Lisa! Ja, absolut. Vad är det för typ av arbete?'},
+  {mine:false,txt:'Badrumsrenovering, 6 lägenheter i Göteborg. Startar måndag 31 mars.'},
+  {mine:true,txt:'Låter perfekt. Vi tar det! Ska vi stämma av på telefon imorgon?'},
+  {mine:false,txt:'Kul! Ring mig imorgon. 0700-123456 / Lisa.'},
+];
+
+function renderPortal(){renderAds();renderReqs();renderConvs();renderMsgs()}
+
+function renderAds(){
+  document.getElementById('adsGrid').innerHTML=ADS.map((a,i)=>`
+    <div class="ac">
+      <div class="aav" style="background:${a.bg}">${a.icon}</div>
+      <div class="abody">
+        <div class="atop"><span class="aco">${a.co}</span>
+          <span class="badge ${a.type==='hire'?'hire':'offer'}">${a.type==='hire'?'🟢 Söker personal':'🔵 Erbjuder personal'}</span>
+          ${a.urg?'<span class="badge urg">🔴 Akut</span>':''}
+        </div>
+        <div class="adesc"><strong>${a.title}</strong><br><span style="font-size:12px;color:var(--muted)">${a.desc}</span></div>
+        <div class="chips"><span class="chip">👥 ${a.ppl} pers.</span><span class="chip">🔧 ${a.skl}</span><span class="chip">📅 ${a.st}</span><span class="chip">📍 ${a.loc}</span><span class="chip">💰 ${a.rate}</span></div>
+      </div>
+      <div class="aacts"><button class="bsm or" onclick="openChat('${a.co}')">Kontakta →</button><button class="bsm out" onclick="toast('Öppnar annons...')">Se mer</button></div>
+    </div>`).join('');
+}
+
+function renderReqs(){
+  document.getElementById('reqGrid').innerHTML=REQS.map(r=>`
+    <div class="ac">
+      <div class="aav" style="background:var(--obg);font-size:20px">${r.icon}</div>
+      <div class="abody">
+        <div class="atop"><span class="aco">${r.name}</span><span class="badge hire">Ny förfrågan</span></div>
+        <div class="adesc"><strong>${r.job}</strong> · ${r.area}<br>Uppskattning: ${r.est}</div>
+        <div class="chips"><span class="chip">🕐 ${r.date}</span></div>
+      </div>
+      <div class="aacts"><button class="bsm or" onclick="toast('Svar skickat till ${r.name}!')">Svara →</button><button class="bsm out" onclick="toast('Förfrågan avböjd.')">Avböj</button></div>
+    </div>`).join('');
+}
+
+function renderConvs(){
+  document.getElementById('convList').innerHTML=CONVS.map(c=>`
+    <button class="citem ${c.name===document.getElementById('chatWith').textContent?'active':''}" onclick="openChat('${c.name}')">
+      <div class="cav">🏢</div>
+      <div style="flex:1;min-width:0"><div class="cname">${c.name}</div><div class="clast">${c.last}</div></div>
+      ${c.unr?`<div class="cbadge">${c.unr}</div>`:''}
+    </button>`).join('');
+}
+
+function renderMsgs(){
+  const ma=document.getElementById('msgArea');
+  ma.innerHTML=MSGS.map(m=>`<div class="msg ${m.mine?'mine':'theirs'}"><div class="mb">${m.txt}</div><div class="mt">${m.mine?'Du':'Motparten'}</div></div>`).join('');
+  ma.scrollTop=ma.scrollHeight;
+}
+
+function openChat(name){
+  document.getElementById('chatWith').textContent=name;
+  renderMsgs();renderConvs();
+  document.querySelectorAll('.ptab').forEach((t,i)=>{const ids=['pt-board','pt-prices','pt-requests','pt-messages','pt-settings'];t.classList.toggle('active',ids[i]==='pt-messages')});
+  document.querySelectorAll('.ppanel').forEach(p=>{p.classList.toggle('active',p.id==='pt-messages')});
+}
+
+function sendMsg(){
+  const inp=document.getElementById('chatInput'),txt=inp.value.trim();
+  if(!txt)return;
+  const ma=document.getElementById('msgArea');
+  const d=document.createElement('div');d.className='msg mine';
+  d.innerHTML=`<div class="mb">${txt}</div><div class="mt">Nu</div>`;
+  ma.appendChild(d);inp.value='';ma.scrollTop=ma.scrollHeight;
+  setTimeout(()=>{
+    const rs=['Okej, låter bra!','Vi återkommer snart!','Perfekt, tack!','Hör av dig imorgon!'];
+    const r=document.createElement('div');r.className='msg theirs';
+    r.innerHTML=`<div class="mb">${rs[Math.floor(Math.random()*rs.length)]}</div><div class="mt">Nu</div>`;
+    ma.appendChild(r);ma.scrollTop=ma.scrollHeight;
+  },1000);
+}
+
+// ═══ OVERLAYS ═══
+function ov(id){document.getElementById(id).classList.add('open')}
+function cov(id){document.getElementById(id).classList.remove('open')}
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
+
+// ═══ FORMS ═══
+function doQuote(){
+  const n=document.getElementById('qName').value.trim(),e=document.getElementById('qEmail').value.trim();
+  if(!n||!e){toast('⚠️ Fyll i namn och e-post');return}
+  cov('quoteModal');toast('🎉 Förfrågan skickad! Vi hör av oss snart.');
+}
+function doFirma(){
+  const n=document.getElementById('fName').value.trim(),e=document.getElementById('fEmail').value.trim();
+  if(!n||!e){toast('⚠️ Fyll i företagsnamn och e-post');return}
+  cov('firmaModal');toast('🎉 Tack! Vi hör av oss inom 24h för onboarding.');
+}
+function doContact(){
+  const n=document.getElementById('cName').value.trim(),e=document.getElementById('cEmail').value.trim();
+  if(!n||!e){toast('⚠️ Fyll i namn och e-post');return}
+  toast('✅ Meddelande skickat! Svar inom 24h.');
+}
+function doSignup(){
+  const e=document.getElementById('signupEmail').value.trim();
+  if(!e){toast('⚠️ Fyll i din e-post');return}
+  document.getElementById('signupEmail').value='';toast('✅ Du är anmäld! Vi hör av oss vid lansering.');
+}
+
+// ═══ AD MODAL ═══
+let adT='hire';
+function selAT(el,t){adT=t;document.querySelectorAll('.tb').forEach(b=>b.classList.remove('sel'));el.classList.add('sel')}
+function publishAd(){
+  const ppl=document.getElementById('adPpl').value||'?';
+  const skl=document.getElementById('adSkl').value;
+  const loc=document.getElementById('adLoc').value||'Ej angett';
+  const st=document.getElementById('adSt').value||'Flexibelt';
+  const dur=document.getElementById('adDur').value||'Ej angett';
+  const rate=document.getElementById('adRate').value||'Diskuterbart';
+  const desc=document.getElementById('adDesc').value||'Ingen beskrivning.';
+  const urg=document.getElementById('adUrg').checked;
+  ADS.unshift({type:adT,urg,co:S.co,icon:adT==='hire'?'🙋':'🤝',bg:'#F5F3FF',
+    title:`${adT==='hire'?'Söker':'Erbjuder'} ${ppl} ${skl} — ${loc}`,
+    ppl,skl,st,dur,loc,rate,desc});
+  cov('postAdModal');renderAds();toast('🎉 Annonsen är publicerad!');
+}
+
+// ═══ TOAST ═══
+function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3200)}
+
+// ═══ INIT ═══
+renderJobs();
+</script>
+</body>
 </html>
